@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/wrangler.json",
+
+  "name": "fatehpursikrifort",
+  "compatibility_date": "2025-03-04",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+
+  "pages_build_output_dir": "dist/public",
+
+  "build": {
+    "command": "pnpm vite build",
+    "cwd": "./"
+  },
+
+  "assets": {
+    "directory": "dist/public"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}
