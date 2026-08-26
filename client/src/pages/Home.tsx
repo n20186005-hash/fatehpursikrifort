@@ -1,6 +1,13 @@
 /**
  * 设计提示：赤砂石的门槛——以城门、台阶与边注建立叙事路线；真实照片承担空间证据，印地语与英语绝不混排。
  */
+import brandImage from "@assets/fatehpur-brand-mark.png";
+import archPatternImage from "@assets/fatehpur-hero-arch-pattern.png";
+import jaliImage from "@assets/fatehpur-jali-pattern.png";
+import stoneImage from "@assets/fatehpur-stone-detail.png";
+import bulandImage from "@assets/buland-darwaza-wikimedia.jpg";
+import courtyardImage from "@assets/fatehpur-courtyard-unsplash.jpg";
+import diwanImage from "@assets/fatehpur-diwan-unsplash.jpg";
 import { BrandMark } from "@/components/BrandMark";
 import { ChevronDown, CircleAlert, Clock3, ExternalLink, Languages, MapPin, Menu, MoveRight, Ticket, TrainFront, Utensils, CarFront, Plane, Landmark, Accessibility, Fuel, Store, Building2, ArrowUpRight } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -9,13 +16,13 @@ import { Link } from "wouter";
 type Language = "hi" | "en";
 
 const images = {
-  buland: "/manus-storage/buland-darwaza-wikimedia_3ec88d2b.jpg",
-  courtyard: "/manus-storage/fatehpur-courtyard-unsplash_8847534b.jpg",
-  diwan: "/manus-storage/fatehpur-diwan-unsplash_320bdc2e.jpg",
-  archPattern: "/manus-storage/fatehpur-hero-arch-pattern_7d69fed8.png",
-  jali: "/manus-storage/fatehpur-jali-pattern_5985755b.png",
-  stone: "/manus-storage/fatehpur-stone-detail_6f0f1cd5.png",
-  brand: "/manus-storage/fatehpur-brand-mark_de56814f.png",
+  buland: bulandImage,
+  courtyard: courtyardImage,
+  diwan: diwanImage,
+  archPattern: archPatternImage,
+  jali: jaliImage,
+  stone: stoneImage,
+  brand: brandImage,
 };
 
 const mapSrc = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6326.810449348338!2d77.66366847720768!3d27.096651076537977!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x397393fd030fffff%3A0x75aefa4abef7bb0c!2sFatehpur%20Sikri%20Fort!5e1!3m2!1shi!2s!4v1787621608212!5m2!1shi!2s";
