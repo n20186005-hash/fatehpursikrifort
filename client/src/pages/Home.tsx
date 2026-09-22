@@ -9,6 +9,7 @@ import bulandImage from "@assets/buland-darwaza-wikimedia.jpg";
 import courtyardImage from "@assets/fatehpur-courtyard-unsplash.jpg";
 import diwanImage from "@assets/fatehpur-diwan-unsplash.jpg";
 import { BrandMark } from "@/components/BrandMark";
+import { WeatherPanel } from "@/components/WeatherPanel";
 import { ChevronDown, CircleAlert, Clock3, ExternalLink, Languages, MapPin, Menu, MoveRight, Ticket, TrainFront, Utensils, CarFront, Plane, Landmark, Accessibility, Fuel, Store, Building2, ArrowUpRight } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
@@ -33,13 +34,13 @@ const translations = {
     siteName: "फ़तेहपुर सीकरी",
     markLabel: "फ़तेहपुर सीकरी विरासत गाइड",
     eyebrow: "स्वतंत्र विरासत गाइड · उत्तर प्रदेश, भारत",
-    nav: ["कहानी", "यात्रा की योजना", "वहाँ पहुँचें", "नक्शा", "सवाल"],
+    nav: ["कहानी", "यात्रा की योजना", "वहाँ पहुँचें", "मौसम", "ऋतुएँ", "यात्रा-योजनाएँ", "सवाल"],
     heroKicker: "बुलंद दरवाज़े के पास",
     heroTitle: <>दरवाज़े के पार,<br /><em>एक नियोजित मुग़ल शहर।</em></>,
     heroCopy: "लाल बलुआ पत्थर, खुले आँगन और समय के साथ बनी एक राजधानी। फ़तेहपुर सीकरी को समझने के लिए एक शांत, स्वतंत्र और गैर-लाभकारी मार्गदर्शिका।",
     planVisit: "यात्रा की तैयारी",
     learnStory: "कहानी पढ़ें",
-    rating: "Google Maps पर 4.5/5 · 43,565 समीक्षाएँ",
+    rating: "Google Maps पर 4.5/5 · 43,665 समीक्षाएँ",
     photoCredit: "मुख्य चित्र: Buland Darwaza, Fatehpur Sikri · Wikimedia Commons",
     landmarkLabel: "विश्व धरोहर परिसर",
     quickFacts: [
@@ -50,6 +51,7 @@ const translations = {
     introNumber: "01 — पृष्ठभूमि",
     introTitle: "विजय की नगरी, जो एक दशक के लिए राजधानी बनी।",
     introBody: "सम्राट अकबर ने 16वीं शताब्दी के उत्तरार्ध में इस पहाड़ी किनारे पर फ़तेहपुर सीकरी बसाई। यह मुग़ल साम्राज्य की राजधानी लगभग एक दशक रही और आज अपने महलों, सार्वजनिक भवनों, मस्जिदों तथा एकीकृत नगर नियोजन के लिए यूनेस्को विश्व धरोहर है।",
+    entityLead: "फ़तेहपुर सीकरी क़िला (Fatehpur Sikri Fort) में आपका स्वागत है, जिसे व्यापक रूप से सरलतः फ़तेहपुर सीकरी के नाम से पहचाना जाता है। यह फ़तेहपुर सीकरी, उत्तर प्रदेश, भारत के मध्य में स्थित एक यूनेस्को विश्व धरोहर परिसर है और क्षेत्र की मुग़ल विरासत को देखने आने वाले यात्रियों का एक प्रमुख केंद्र है।",
     introQuote: "“बुलंद दरवाज़ा” — ऊँचा द्वार — जामा मस्जिद के दक्षिणी आँगन तक पहुँचने वाला स्मारकीय प्रवेश है।",
     heritageSource: "यूनेस्को विश्व धरोहर सूची",
     storyCards: [
@@ -70,19 +72,21 @@ const translations = {
     comfortTitle: "सुविधाएँ और जिम्मेदार तैयारी",
     comfortBody: "शौचालय, पानी और निर्धारित सहायता सेवाओं की उपलब्धता स्थान व समय के अनुसार बदल सकती है। धूप से बचाव, पीने का पानी और आरामदायक जूते साथ रखें। धार्मिक क्षेत्र में शांतिपूर्वक व्यवहार करें और स्थानीय नियमों का सम्मान करें।",
     helpItems: [
-      ["चलना", "सीढ़ियाँ और असमतल सतहें मिल सकती हैं।"],
-      ["पार्किंग", "निर्धारित सार्वजनिक पार्किंग क्षेत्र व संकेतों का उपयोग करें।"],
-      ["भोजन", "आसपास स्थानीय भोजन और जलपान के प्रकार मिल सकते हैं; स्वतंत्र रूप से जाँचें।"],
-      ["ईंधन/खरीद", "रास्ते में सामान्य ईंधन, चार्जिंग और दैनिक-जरूरत सेवाएँ मिल सकती हैं।"],
+      ["घूमना-फिरना", "सीढ़ियाँ और असमतल पत्थर की सतहें मिलेंगी; नियोजित शहर धीमी, सावधान चाल के लिए ठीक है, हर जगह पहियों के लिए नहीं।"],
+      ["पार्किंग", "प्रवेश के पास निर्धारित सार्वजनिक पार्किंग क्षेत्र का उपयोग करें और आगमन पर संकेतों का पालन करें।"],
+      ["भोजन और पेय", "गेट के पास छोटी खाने-पीने की जगहें हैं; लंबे खुले आँगनों के लिए अपना पानी साथ रखें।"],
+      ["पास के ठहरने", "आगरा में ठहरने के सबसे व्यापक विकल्प हैं; जल्दी शुरुआत के लिए फ़तेहपुर सीकरी के पास कुछ गेस्टहाउस हैं।"],
+      ["दुकानें और ज़रूरतें", "प्रवेश के पास स्मृति-चिह्न और रोज़मर्रा की दुकानें हैं—धीरे देखें; किसी एक दुकान की सिफारिश नहीं।"],
+      ["ईंधन और EV चार्जिंग", "आगरा–फ़तेहपुर सीकरी मार्ग पर ईंधन स्टेशन और बढ़ते EV चार्जर हैं; अंतिम हिस्से से पहले ईंधन भर लें।"],
     ],
     transportKicker: "03 — वहाँ पहुँचें",
     transportTitle: "आगरा या भरतपुर से, विरासत परिसर की ओर",
     transportIntro: "फ़तेहपुर सीकरी आगरा से लगभग 37 किमी और भरतपुर से लगभग 18 किमी दूर है। यह खंड केवल परिवहन के प्रकार बताता है; किसी निजी संचालक, दुकान या ठहरने की जगह की सिफारिश नहीं करता।",
     transportCards: [
-      ["हवाई मार्ग", "आगरा का हवाई संपर्क उपयोगी हो सकता है; उपलब्ध उड़ानों और आगे की सड़क-यात्रा की पुष्टि पहले करें।"],
-      ["रेल", "आगरा कैंट प्रमुख रेल केंद्र है। वहाँ से आगे टैक्सी या बस जैसे स्थानीय सड़क विकल्पों पर विचार करें।"],
-      ["बस", "आगरा से फ़तेहपुर सीकरी दिशा में बस सेवाएँ मिल सकती हैं। समय और स्टॉप पहले सत्यापित करें।"],
-      ["टैक्सी / सड़क", "आगरा या भरतपुर से दिन-यात्रा के लिए वाहन एक व्यावहारिक विकल्प हो सकता है; किराया और लौटने की व्यवस्था पहले तय करें।"],
+      ["हवाई मार्ग", "सबसे नज़दीकी हवाई अड्डा आगरा का खेरिया (AGR) है, जहाँ सीमित घरेलू उड़ानें हैं; अधिकांश यात्री दिल्ली के इंदिरा गांधी अंतरराष्ट्रीय (DEL) हवाई अड्डे पर आते हैं और आगे सड़क या रेल से जाते हैं। बुकिंग से पहले वर्तमान मार्ग जाँचें।"],
+      ["रेल मार्ग", "आगरा कैंट मुख्य रेल केंद्र है, जो दिल्ली, जयपुर और मुंबई से अच्छी तरह जुड़ा है। आगरा से आगे स्थानीय बस, शेयर टैक्सी या ऐप-आधारित कैब से जाएँ।"],
+      ["बस / सार्वजनिक परिवहन", "UPSRTC और निजी बसें आगरा → फ़तेहपुर सीकरी चलती हैं; बस स्टैंड से आख़िरी हिस्सा स्थानीय शेयर ऑटो और टेंपो तय करते हैं। समय-सारणी उसी दिन जाँचें।"],
+      ["टैक्सी / स्व-ड्राइव", "आगरा (≈37 किमी) या भरतपुर (≈18 किमी) से कैब या निजी कार दिन-यात्रा के लिए सबसे लचीला विकल्प है। मीटर/ऐप कैब न हो तो किराया और लौटने का समय पहले तय करें।"],
     ],
     nearbyKicker: "04 — आसपास समझें",
     nearbyTitle: "एक दिन, कई परतें",
@@ -94,14 +98,21 @@ const translations = {
     mapKicker: "05 — स्थान",
     mapTitle: "बुलंद दरवाज़ा, दादूपुरा",
     mapBody: "नक्शा केवल स्थान-समझ के लिए है। दिशा, सड़क की स्थिति, स्थानीय आवागमन और प्रवेश व्यवस्था यात्रा से पहले सत्यापित करें।",
+    mapRef: "प्लस कोड 3MW8+MF · फ़तेहपुर सीकरी, उत्तर प्रदेश, भारत · +91 522 406 1369",
     openMap: "Google Maps में खोलें",
-    faqKicker: "06 — सामान्य प्रश्न",
+    faqKicker: "10 — सामान्य प्रश्न",
     faqTitle: "यात्रा से पहले अक्सर पूछे जाने वाले प्रश्न",
     faq: [
       ["फ़तेहपुर सीकरी कब खुलती है?", "भारतीय पुरातत्व सर्वेक्षण इसे सूर्योदय से सूर्यास्त तक खुला बताता है। समय बदल सकता है, इसलिए उसी दिन आधिकारिक जाँच उपयोगी है।"],
       ["मुझे यहाँ कितना समय देना चाहिए?", "महल परिसर और जामा मस्जिद क्षेत्र को समझकर देखने के लिए कम-से-कम आधे दिन की योजना सुविधाजनक रहती है।"],
       ["बुलंद दरवाज़ा किसलिए प्रसिद्ध है?", "यह जामा मस्जिद परिसर का विशाल प्रवेश-द्वार है। यूनेस्को के अनुसार यह गुजरात विजय की स्मृति में पूरा किया गया था और इसकी ऊँचाई लगभग 40 मीटर है।"],
       ["क्या आगरा से दिन-यात्रा संभव है?", "हाँ, आधिकारिक उत्तर प्रदेश पर्यटन सामग्री इसे आगरा से सुलभ दिन-यात्रा के रूप में बताती है। वास्तविक यात्रा समय यातायात और वाहन पर निर्भर करेगा।"],
+      ["फ़तेहपुर सीकरी क़िला कहाँ स्थित है?", "फ़तेहपुर सीकरी क़िला बुलंद गेट, दादूपुरा, फ़तेहपुर सीकरी, उत्तर प्रदेश 283110, भारत में स्थित है — आगरा से लगभग 37 किमी।"],
+      ["फ़तेहपुर सीकरी किस लिए प्रसिद्ध है?", "यह यूनेस्को विश्व धरोहर स्थल है, जो बुलंद दरवाज़े, जामा मस्जिद, पंच महल और अकबर की नियोजित मुग़ल राजधानी के लिए जाना जाता है।"],
+      ["क्या फ़तेहपुर सीकरी राजस्थान में है?", "नहीं। फ़तेहपुर सीकरी उत्तर प्रदेश (आगरा ज़िला) में है, राजस्थान में नहीं। यह भ्रम अक्सर होता है क्योंकि यह राजस्थान की सीमा के पास है।"],
+      ["फ़तेहपुर सीकरी की एंट्री टिकट फ़ीस क्या है?", "भारतीय पुरातत्व सर्वेक्षण (ASI) के स्मारकों में आमतौर पर भारतीय नागरिकों के लिए कम और विदेशी पर्यटकों के लिए अधिक शुल्क होता है; 15 वर्ष से कम आयु के बच्चों का प्रवेश निःशुल्क बताया गया है। वर्तमान दर यात्रा से पहले आधिकारिक स्रोत से जाँचें।"],
+      ["शेख सलीम चिश्ती का दरगाह (Dargah) क्या है?", "यह परिसर के भीतर सफ़ेद संगमरमर का मकबरा है, जो एक सक्रिय सूफ़ी दरगाह है। यहाँ विनम्र कपड़े पहनें और जूते उतारें; पूजा-स्थल के नियमों का सम्मान करें।"],
+      ["क्या इस गाइड का हिंदी संस्करण है?", "हाँ। पृष्ठ के शीर्ष पर 'EN' / 'हिं' बटन से पूरी गाइड हिंदी और अंग्रेज़ी दोनों में पढ़ें।"],
     ],
     resourcesKicker: "स्रोत और उत्तरदायित्व",
     resourcesTitle: "खुली जानकारी, स्वतंत्र प्रस्तुति",
@@ -109,7 +120,8 @@ const translations = {
     sources: [
       ["यूनेस्को", "विश्व धरोहर सूची और असाधारण सार्वभौमिक मूल्य"],
       ["भारतीय पुरातत्व सर्वेक्षण", "फ़तेहपुर सीकरी: समय, प्रवेश और संग्रहालय सूचना"],
-      ["उत्तर प्रदेश पर्यटन", "आगरा से यात्रा और स्थल-विवरण"],
+      ["उत्तर प्रदेश पर्यटन", "आगरा से यात्रा, स्थल-विवरण और आधिकारिक जानकारी"],
+      ["विकिपीडिया", "स्वतंत्र विश्वकोश — संक्षिप्त इतिहास और तथ्य"],
     ],
     footerTag: "स्वतंत्र, गैर-लाभकारी आगंतुक सूचना परियोजना",
     footerStatement: "यह एक स्वतंत्र, गैर-लाभकारी आगंतुक सूचना गाइड है। इसका किसी सरकारी निकाय, आधिकारिक संगठन या वाणिज्यिक संचालक से संबंध नहीं है।",
@@ -120,19 +132,86 @@ const translations = {
     skip: "मुख्य सामग्री पर जाएँ",
     language: "EN",
     backTop: "ऊपर जाएँ",
+
+    // Weather
+    weatherKicker: "06 — मौसम",
+    weatherTitle: "फ़तेहपुर सीकरी में आज और आने वाला सप्ताह",
+    weatherIntro: "परिसर के लिए वर्तमान स्थिति और सात दिन का पूर्वानुमान, कुछ मिनट में ताज़ा होता है, ताकि आप कपड़े, छाया और बारिश के बचाव का चयन कर सकें।",
+    wNow: "अभी",
+    wForecast: "आने वाले 7 दिन",
+    wFeels: "ऐसा लगता है",
+    wHumidity: "आर्द्रता",
+    wWind: "हवा",
+    wRain: "बारिश",
+    wUv: "यूवी",
+    wUpdated: "अपडेट",
+    wLoading: "वर्तमान स्थिति लोड हो रही है…",
+    wError: "लाइव मौसम अस्थायी रूप से उपलब्ध नहीं है। स्थानीय मौसम जल्दी बदलता है—निकलने से पहले मौसम ऐप देखें।",
+    wUmbrella: "आज बारिश का बचाव साथ रखें; छिटपट बारिश या अधिक बारिश की संभावना है।",
+    wHeat: "गर्मी काफ़ी है—दोपहर में छाया में आराम करें और बार-बार पानी पिएँ।",
+    wUvWarn: "यूवी बहुत अधिक है—सूर्य सुरक्षा और टोपी का उपयोग करें।",
+    advTitle: "आज की यात्रा कैसे करें",
+    advOutfit: "पहनावा",
+    advActivity: "क्या करें",
+    advItems: "साथ रखें",
+    advRisk: "सुरक्षा सूचना",
+
+    // Seasons & climate
+    seasonsKicker: "07 — ऋतुएँ",
+    seasonsTitle: "कब जाएँ: एक ऋतु-रणनीति",
+    seasonsIntro: "फ़तेहपुर सीकरी की गर्म अर्ध-शुष्क जलवायु है और तीन स्पष्ट ऋतुएँ हैं। नीचे सारांश दीर्घकालिक जलवायु-सामान्यों पर आधारित है, जो योजना बनाने में मदद करता है।",
+    seasonHead: ["ऋतु", "मौसम", "आराम", "सलाह"],
+    seasonRows: [
+      ["शीतकाल (नवं–फ़रवरी)", "ठंडा, शुष्क", "12–25°C दिन, धूप, कम आर्द्रता", "सबसे सुखद; खुले आँगनों के लिए आदर्श", "सबसे अच्छी खिड़की; सुबह और देर शाम सुखद।"],
+      ["ग्रीष्म (मार्च–जून)", "गर्म, शुष्क", "अक्सर 35–44°C, धूल", "दोपहर में कठिन; जल्दी शुरुआत ज़रूरी", "खुलने पर पहुँचें, छाया में रहें, पानी और टोपी साथ रखें।"],
+      ["मानसून (जुलाई–सितं)", "गर्म, आर्द्र, छिटपट", "30–36°C, हरा पर फिसलना पत्थर", "भीड़ कम, नाटकीय आसमान", "बारिश के बाद पत्थर फिसलना हो जाता है; भारी बारिश के बाद पहुँच सत्यापित करें।"],
+    ],
+    climateKicker: "जलवायु और परिस्थितियाँ",
+    climateTitle: "मौसम और पत्थर को समझना",
+    climateBody: "दीर्घकालिक रूप से वर्ष एक ठंडी शुष्क सर्दी, लंबी गर्म गर्मी और दक्षिण-पश्चिम मानसून में बँटता है। लाल बलुआ पत्थर गर्मी सोख लेता है, इसलिए सतहें और आँगन वायु तापमान से अधिक गर्म लगते हैं। मानसून बारिश से पॉलिश किए पत्थर की सीढ़ियाँ फिसलने लगती हैं और खुले नियोजित शहर में गर्मी की धूप तेज़ होती है। एक दिन के पूर्वानुमान के बजाय इन पैटर्न के अनुसार जल, सूर्य-सुरक्षा और गति की योजना बनाएँ।",
+
+    // Itineraries
+    itineraryKicker: "08 — यात्रा-योजनाएँ",
+    itineraryTitle: "यात्री और समय के अनुसार मार्ग",
+    itineraryIntro: "अपने समूह और उपलब्ध समय के अनुसार मार्ग चुनें। इनमें किसी गाइड की ज़रूरत नहीं और सभी सार्वजनिक परिसर के भीतर हैं।",
+    itineraries: [
+      ["बच्चों के साथ परिवार", "छोटा, शांत मार्ग: बुलंद दरवाज़े से प्रवेश करें, जामा मस्जिद के आँगन में ठहरें, बच्चों को दीवान-ए-आम के पास खुले स्थान में घूमने दें, फिर छाया में आराम कर लौटें। बार-बार पानी के साथ लगभग आधा दिन रखें।"],
+      ["फ़ोटोग्राफ़ी और विरासत", "बाल-रोशनी में पत्थर पर नरम साइड-लाइट के लिए पहली रोशनी में पहुँचें; बुलंद दरवाज़ा, महल क्षेत्र के जाली पर्दे और पंच महल की सममिति को प्राथमिकता दें, और आँगन से सुनहरी घड़ी की तस्वीरों के लिए लौटें। बदलती रोशनी को पूरा दिन लगता है।"],
+      ["कम-प्रयास और सुलभ", "निर्धारित पार्किंग और समतल मार्ग का उपयोग करें, जामा मस्जिद के प्रांगण और समतल आँगन को प्राथमिकता दें, बैठकर आराम करें और सबसे खड़ी सीढ़ियों से बचें। एक शांत, छोटा मार्ग आरामदायक रखता है।"],
+    ],
+    routesKicker: "सुझाए गए प्लान",
+    routesTitle: "आधे दिन और पूरे दिन के आउटलाइन",
+    routes: [
+      ["आधा दिन (3–4 घंटे)", "बुलंद दरवाज़ा → जामा मस्जिद → शेख सलीम चिश्ती का मकबरा → दीवान-ए-आम → पंच महल → आँगन से बाहर। खुलने पर या देर शाम सबसे अच्छा।"],
+      ["पूरा दिन (6–7 घंटे)", "महल क्षेत्र, दीवान-ए-ख़ास, रानी के क्वार्टर और पुरातात्विक संग्रहालय जोड़ें, दोपहर में लंबा छाया-ब्रेक लें। आगरा की अन्य जगहों को अलग दिन रखें।"],
+    ],
+
+    // Responsibility
+    responsibilityKicker: "09 — ज़िम्मेदारी से घूमें",
+    responsibilityTitle: "विरासत, पर्यावरण और आप",
+    responsibilityBody: "फ़तेहपुर सीकरी एक जीवित यूनेस्को विश्व धरोहर स्थल है। छोटी पसंदें इसे अगले यात्री के लिए बचाती हैं।",
+    responsibilityItems: [
+      ["ढाँचे का सम्मान करें", "प्रतिबंधित संरचनाओं पर न चढ़ें और पत्थर पर निशान न बनाएँ; चिह्नित पथ पर रहें।"],
+      ["कचरा साथ लाएँ", "खुले परिसर में डिब्बे सीमित हैं—अपना कचरा साथ ले जाएँ।"],
+      ["पवित्र स्थान में शांति", "जामा मस्जिद और मकबरा सक्रिय पूजा-स्थल हैं; धीरे बोलें और विनम्र कपड़े पहनें।"],
+      ["जल और छाया", "यहाँ असली ख़तरा गर्मी और धूप है—अपनी गति रखें और पानी पिएँ।"],
+    ],
+
+    legendTitle: "एक भविष्यवाणी पर बसा शहर",
+    legendBody: "प्रचलित परंपरा के अनुसार सम्राट अकबर सिकरी की पहाड़ी पर सूफ़ी संत शेख सलीम चिश्ती का आशीर्वाद लेने आए और एक पुत्र का जन्म भविष्यवाणी के अनुसार हुआ। कृतज्ञता में अकबर ने लगभग 1571 में यहाँ एक राजधानी बसाई और अपने गुजरात अभियान के बाद इसका नाम फ़तेहपुर सीकरी—“विजय का शहर”—रखा। लगभग एक दशक तक यह मुग़ल साम्राज्य की राजधानी रही, लाल बलुआ पत्थर से समृद्ध रूप से बनी, फिर 1585 के आसपास दरबार लाहौर और बाद में आगरा चला गया। शहर कभी नष्ट नहीं हुआ; इसे बस छोड़ दिया गया, जिससे इसकी नियोजित गलियाँ, प्रवेश-द्वार और महल आज भी पूरी तरह सुरक्षित हैं।",
   },
   en: {
     htmlLang: "en",
     siteName: "Fatehpur Sikri",
     markLabel: "Fatehpur Sikri Heritage Guide",
     eyebrow: "Independent heritage guide · Uttar Pradesh, India",
-    nav: ["Story", "Plan a visit", "Getting there", "Map", "FAQ"],
+    nav: ["Story", "Plan a visit", "Getting there", "Weather", "Seasons", "Itineraries", "FAQ"],
     heroKicker: "By Buland Darwaza",
     heroTitle: <>Beyond the gateway,<br /><em>a planned Mughal city.</em></>,
     heroCopy: "Red sandstone, generous courtyards and a capital shaped by time. A calm, independent, nonprofit guide to understanding Fatehpur Sikri.",
     planVisit: "Plan your visit",
     learnStory: "Read the story",
-    rating: "4.5/5 on Google Maps · 43,565 reviews",
+    rating: "4.5/5 on Google Maps · 43,665 reviews",
     photoCredit: "Hero image: Buland Darwaza, Fatehpur Sikri · Wikimedia Commons",
     landmarkLabel: "World Heritage complex",
     quickFacts: [
@@ -143,6 +222,7 @@ const translations = {
     introNumber: "01 — Context",
     introTitle: "A city of victory that became a capital for a decade.",
     introBody: "Emperor Akbar founded Fatehpur Sikri on this ridge in the later 16th century. It served as the Mughal capital for about a decade and is now a UNESCO World Heritage site, recognized for its palaces, public buildings, mosques and coherent urban plan.",
+    entityLead: "Welcome to Fatehpur Sikri Fort, widely recognized simply as Fatehpur Sikri. Located in the heart of Fatehpur Sikri, Uttar Pradesh, India, this UNESCO World Heritage complex is a primary hub for travelers exploring the region's Mughal heritage.",
     introQuote: "Buland Darwaza — the Lofty Gate — is the monumental entrance rising towards the southern court of Jama Masjid.",
     heritageSource: "UNESCO World Heritage List",
     storyCards: [
@@ -163,19 +243,21 @@ const translations = {
     comfortTitle: "Facilities and considerate preparation",
     comfortBody: "Availability of toilets, water and designated assistance may vary by time and location. Bring sun protection, drinking water and comfortable shoes. Behave quietly in religious spaces and follow local instructions.",
     helpItems: [
-      ["Walking", "Expect steps and uneven surfaces in parts of the complex."],
-      ["Parking", "Use designated public parking areas and follow signs on arrival."],
-      ["Food", "Local food and refreshment types may be available nearby; check independently."],
-      ["Fuel / essentials", "General fuel, charging and everyday-service options may occur along the route."],
+      ["Getting around", "Expect steps and uneven stone surfaces; the planned city suits slow, mindful walking more than wheels in places."],
+      ["Parking", "Use the designated public parking areas near the entry and follow on-site signage on arrival."],
+      ["Food & drink", "Small eateries and tea stalls sit near the gate; carry your own water for the long, open courtyards."],
+      ["Stays nearby", "Agra has the widest range of lodgings; a few guesthouses sit closer to Fatehpur Sikri for early starts."],
+      ["Shops & essentials", "Souvenir and convenience stalls gather near the entrance—browse calmly; no single outlet is endorsed."],
+      ["Fuel & EV charging", "Fuel stations and a growing number of EV chargers line the Agra–Fatehpur Sikri road; top up before the final stretch."],
     ],
     transportKicker: "03 — Getting there",
     transportTitle: "Towards the heritage complex from Agra or Bharatpur",
     transportIntro: "Fatehpur Sikri is about 37 km from Agra and 18 km from Bharatpur. This section describes transport types only; it does not recommend specific private operators, shops or accommodation.",
     transportCards: [
-      ["By air", "Agra’s air links may be useful; confirm active flights and the onward road journey before travelling."],
-      ["By rail", "Agra Cantt is a major rail hub. From there, consider local road options such as taxi or bus."],
-      ["By bus", "Bus services toward Fatehpur Sikri may operate from Agra. Verify timetables and stops before setting out."],
-      ["Taxi / road", "A vehicle from Agra or Bharatpur can be practical for a day visit; agree fare and return arrangements in advance."],
+      ["By air", "The nearest airport is Agra’s Kheria (AGR), with limited domestic flights; most travellers fly into Delhi’s Indira Gandhi International (DEL) and continue by road or rail. Confirm current routes before booking."],
+      ["By rail", "Agra Cantt is the main rail hub, well linked to Delhi, Jaipur and Mumbai. From Agra, continue by local bus, shared taxi or app-based cab to the complex."],
+      ["By bus / public transit", "UPSRTC and private buses run Agra → Fatehpur Sikri; local shared autos and tempos cover the last stretch from the bus stand. Check timetables the same day."],
+      ["Taxi / self-drive", "A cab or private car from Agra (≈37 km) or Bharatpur (≈18 km) is the most flexible option for a day trip. Agree the fare and return time in advance if not using a metered or app cab."],
     ],
     nearbyKicker: "04 — See more nearby",
     nearbyTitle: "One day, several layers",
@@ -187,14 +269,21 @@ const translations = {
     mapKicker: "05 — Location",
     mapTitle: "Buland Darwaza, Dadupura",
     mapBody: "This map is for orientation. Confirm directions, road conditions, local transit and access arrangements before your trip.",
+    mapRef: "Plus Code 3MW8+MF · Fatehpur Sikri, Uttar Pradesh, India · +91 522 406 1369",
     openMap: "Open in Google Maps",
-    faqKicker: "06 — FAQ",
+    faqKicker: "10 — FAQ",
     faqTitle: "Questions often asked before a visit",
     faq: [
       ["When is Fatehpur Sikri open?", "The Archaeological Survey of India lists it as open from sunrise to sunset. Times may vary, so an official same-day check is useful."],
       ["How much time should I allow?", "At least half a day is a comfortable allowance for exploring the palace complex and Jama Masjid area with context."],
       ["Why is Buland Darwaza significant?", "It is the vast gateway to the Jama Masjid precinct. UNESCO describes it as completed to commemorate the victory of Gujarat, at about 40 metres in height."],
       ["Can I visit from Agra in a day?", "Yes. Official Uttar Pradesh tourism material describes it as an accessible day trip from Agra. Actual journey time depends on traffic and transport."],
+      ["Where is Fatehpur Sikri Fort located?", "Fatehpur Sikri Fort is located at Buland Gate, Dadupura, Fatehpur Sikri, Uttar Pradesh 283110, India — about 37 km from Agra."],
+      ["What is Fatehpur Sikri famous for?", "It is a UNESCO World Heritage Site known for Buland Darwaza, the Jama Masjid, Panch Mahal and Akbar's planned Mughal capital."],
+      ["Is Fatehpur Sikri in Rajasthan?", "No. Fatehpur Sikri is in Uttar Pradesh (Agra district), not Rajasthan. The confusion is common because it lies near the Rajasthan border."],
+      ["What is the entry ticket fee?", "ASI monuments usually charge a lower fee for Indian citizens and a higher fee for foreign nationals; entry for children under 15 is listed as free. Verify the current rate with an official source before travel."],
+      ["What is the Dargah of Sheikh Salim Chishti?", "It is a white marble tomb within the complex and an active Sufi shrine. Dress modestly and remove your shoes; respect the rules of the place of worship."],
+      ["Is there a Hindi version of this guide?", "Yes. Use the EN / हिं button at the top of the page to read the entire guide in Hindi as well as English."],
     ],
     resourcesKicker: "Sources and responsibility",
     resourcesTitle: "Open information, independent presentation",
@@ -202,7 +291,8 @@ const translations = {
     sources: [
       ["UNESCO", "World Heritage List and Outstanding Universal Value"],
       ["Archaeological Survey of India", "Fatehpur Sikri: hours, admission and museum information"],
-      ["Uttar Pradesh Tourism", "Journey information from Agra and site overview"],
+      ["Uttar Pradesh Tourism", "Journey information from Agra, site overview and official details"],
+      ["Wikipedia", "Independent encyclopedia — concise history and facts"],
     ],
     footerTag: "Independent, nonprofit visitor information project",
     footerStatement: "This is an independent, nonprofit visitor information guide. It is not affiliated with any government body, official organization or commercial operator.",
@@ -213,6 +303,74 @@ const translations = {
     skip: "Skip to main content",
     language: "हिं",
     backTop: "Back to top",
+
+    // Weather
+    weatherKicker: "06 — Weather",
+    weatherTitle: "Today and the week ahead at Fatehpur Sikri",
+    weatherIntro: "Live conditions and a seven-day outlook for the complex, refreshed every few minutes, to help you choose clothing, shade and rain protection.",
+    wNow: "Now",
+    wForecast: "Next 7 days",
+    wFeels: "Feels like",
+    wHumidity: "Humidity",
+    wWind: "Wind",
+    wRain: "Rain",
+    wUv: "UV",
+    wUpdated: "Updated",
+    wLoading: "Loading current conditions…",
+    wError: "Live weather is briefly unavailable. Local conditions shift quickly—check a weather app before you leave.",
+    wUmbrella: "Carry rain protection today; showers or a high rain chance are expected.",
+    wHeat: "Heat is significant—rest in shade at midday and drink water often.",
+    wUvWarn: "UV is very high—use sun protection and a hat.",
+    advTitle: "How to plan your visit today",
+    advOutfit: "What to wear",
+    advActivity: "Things to do",
+    advItems: "Bring with you",
+    advRisk: "Safety notice",
+
+    // Seasons & climate
+    seasonsKicker: "07 — Seasons",
+    seasonsTitle: "When to go: a seasonal strategy",
+    seasonsIntro: "Fatehpur Sikri has a hot semi-arid climate with three clear seasons. The summary below draws on long-term climate normals to help you plan.",
+    seasonHead: ["Season", "Weather", "Comfort", "Advice"],
+    seasonRows: [
+      ["Winter (Nov–Feb)", "Cool, dry", "12–25°C days, sunny, low humidity", "Most comfortable; ideal for the open courtyards", "Best overall window; mornings and late afternoons are pleasant."],
+      ["Summer (Mar–Jun)", "Hot, dry", "Often 35–44°C, dusty", "Demanding at midday; early starts essential", "Arrive at opening, keep to shade, carry water and a hat."],
+      ["Monsoon (Jul–Sep)", "Warm, humid, showers", "30–36°C, green but slick stone", "Fewer crowds, dramatic skies", "Stone gets slippery after rain; verify access after heavy showers."],
+    ],
+    climateKicker: "Climate & conditions",
+    climateTitle: "Reading the weather and the stone",
+    climateBody: "Over the long term the year falls into a cool dry winter, a long hot summer and a southwest monsoon. The red sandstone soaks up heat, so surfaces and courtyards feel warmer than the air temperature suggests. Monsoon rain can make polished stone steps slippery, and the summer sun is intense with little shade across the open planned city. Plan hydration, sun protection and pacing around these patterns rather than a single day’s forecast.",
+
+    // Itineraries
+    itineraryKicker: "08 — Itineraries",
+    itineraryTitle: "Routes by traveller and by time",
+    itineraryIntro: "Pick a route that matches your group and your available time. None requires a guide, and all stay within the public complex.",
+    itineraries: [
+      ["Families with children", "A shorter, calmer loop: enter at Buland Darwaza, pause at the Jama Masjid courtyard, let children explore the open space near Diwan-i-Am, then rest in shade before returning. Keep it to about half a day with frequent water breaks."],
+      ["Photography & heritage", "Arrive at first light for soft side-light on the sandstone; prioritise Buland Darwaza, the jali screens of the palace zone and Panch Mahal’s symmetry, and return for golden-hour shots from the courtyard. A full day captures the changing light."],
+      ["Low-effort & accessible", "Use the designated parking and flatter approach, favour the Jama Masjid forecourt and level courtyards, take seated breaks and avoid the steepest staircases. A calm, shorter circuit keeps it comfortable."],
+    ],
+    routesKicker: "Suggested plans",
+    routesTitle: "Half-day and full-day outlines",
+    routes: [
+      ["Half-day (3–4 hrs)", "Buland Darwaza → Jama Masjid → Tomb of Sheikh Salim Chishti → Diwan-i-Am → Panch Mahal → exit via the courtyard. Best at opening or late afternoon."],
+      ["Full-day (6–7 hrs)", "Add the palace zones, Diwan-i-Khas, the queen’s quarters and the archaeological museum, with a long midday shade break. Pair with Agra’s other sites on a separate day."],
+    ],
+
+    // Responsibility
+    responsibilityKicker: "09 — Visit responsibly",
+    responsibilityTitle: "Heritage, environment and you",
+    responsibilityBody: "Fatehpur Sikri is a living UNESCO World Heritage site. Small choices protect it for the next visitor.",
+    responsibilityItems: [
+      ["Respect the fabric", "Do not climb restricted structures or mark the stone; stay on the marked paths."],
+      ["Carry out waste", "Bins are limited across the open complex—take your litter with you."],
+      ["Quiet in sacred space", "The Jama Masjid and the tomb are active places of worship; speak softly and dress modestly."],
+      ["Hydrate & shade", "Heat and sun are the real hazards here—pace yourself and drink water."],
+    ],
+
+    // History / legend enrichment
+    legendTitle: "A city raised on a prophecy",
+    legendBody: "Widely told tradition holds that Emperor Akbar came to the ridge of Sikri seeking the blessings of the Sufi saint Sheikh Salim Chishti, and a son was born as foretold. In gratitude Akbar founded a capital here around 1571, naming it Fatehpur Sikri—the “City of Victory”—after his Gujarat campaign. For roughly a decade it was the Mughal Empire’s capital, built richly in red sandstone, before the court moved to Lahore around 1585 and later to Agra. The city was never destroyed; it was simply left, which is why its planned streets, gateways and palaces survive so completely today.",
   },
 } as const;
 
@@ -232,21 +390,37 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem("fs-language", language);
     document.documentElement.lang = t.htmlLang;
-    document.title = language === "hi" ? "फ़तेहपुर सीकरी — स्वतंत्र विरासत गाइड" : "Fatehpur Sikri — Independent Heritage Guide";
+    document.title = language === "hi" ? "फ़तेहपुर सीकरी क़िला (Fatehpur Sikri Fort) — पर्यटन गाइड" : "Fatehpur Sikri Fort Guide — Timings, Ticket, History & Location";
   }, [language, t.htmlLang]);
 
   const structuredData = useMemo(() => ({
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "WebSite",
+        "@id": "https://fatehpursikrifort.com/#website",
+        name: "Fatehpur Sikri Fort Fatehpur Sikri Travel Guide",
+        url: "https://fatehpursikrifort.com",
+        inLanguage: language,
+      },
+      {
         "@type": "TouristAttraction",
-        name: "Fatehpur Sikri / Buland Darwaza",
-        alternateName: "फ़तेहपुर सीकरी / बुलंद दरवाज़ा",
+        "@id": "https://fatehpursikrifort.com/#attraction",
+        name: "Fatehpur Sikri Fort",
+        alternateName: ["Fatehpur Sikri", "Buland Darwaza", "फ़तेहपुर सीकरी क़िला"],
+        description: "Comprehensive visitor guide to Fatehpur Sikri Fort in Fatehpur Sikri, Uttar Pradesh, India.",
+        url: "https://fatehpursikrifort.com",
+        image: ["https://fatehpursikrifort.com/og-cover.jpg"],
         address: { "@type": "PostalAddress", streetAddress: "Buland Gate, Dadupura", addressLocality: "Fatehpur Sikri", addressRegion: "Uttar Pradesh", postalCode: "283110", addressCountry: "IN" },
         geo: { "@type": "GeoCoordinates", latitude: 27.0966511, longitude: 77.6636685 },
+        telephone: "+915224061369",
         openingHours: "Open from sunrise to sunset",
-        aggregateRating: { "@type": "AggregateRating", ratingValue: "4.5", reviewCount: "43565" },
-        image: images.buland,
+        aggregateRating: { "@type": "AggregateRating", ratingValue: "4.5", reviewCount: "43665" },
+        hasMap: "https://maps.app.goo.gl/4fcjp1yYQ3WQsXm88",
+        sameAs: [
+          "https://maps.app.goo.gl/4fcjp1yYQ3WQsXm88",
+          "https://www.tajmahal.gov.in/fatehpur-sikri.aspx",
+        ],
       },
       {
         "@type": "FAQPage",
@@ -255,8 +429,8 @@ export default function Home() {
     ],
   }), [t.faq]);
 
-  const navIds = ["story", "visit", "transport", "map", "faq"];
-  const utilities = [Accessibility, CarFront, Utensils, Fuel];
+  const navIds = ["story", "visit", "transport", "weather", "seasons", "itineraries", "faq"];
+  const utilities = [Accessibility, CarFront, Utensils, Building2, Store, Fuel];
   const transportIcons = [Plane, TrainFront, Menu, CarFront];
 
   return (
@@ -279,6 +453,8 @@ export default function Home() {
       </header>
 
       <main id="main">
+        <h1 className="sr-only">{language === "hi" ? "फ़तेहपुर सीकरी क़िला (फ़तेहपुर सीकरी)" : "Fatehpur Sikri Fort (Fatehpur Sikri)"}</h1>
+        <p className="sr-only">Fatehpur Sikri Fort › Fatehpur Sikri › Uttar Pradesh › India</p>
         <section id="top" className="hero-section">
           <div className="hero-pattern" style={{ backgroundImage: `url(${images.archPattern})` }} aria-hidden="true" />
           <div className="hero-copy-wrap">
@@ -292,7 +468,7 @@ export default function Home() {
           </div>
           <div className="hero-visual">
             <div className="arch-frame">
-              <img src={images.buland} alt={language === "hi" ? "फ़तेहपुर सीकरी का बुलंद दरवाज़ा" : "Buland Darwaza at Fatehpur Sikri"} />
+              <img src={images.buland} alt={language === "hi" ? "फ़तेहपुर सीकरी क़िला (Fatehpur Sikri Fort) — बुलंद दरवाज़ा, मुख्य दृश्य फ़तेहपुर सीकरी, भारत" : "Fatehpur Sikri Fort — Buland Darwaza, main view in Fatehpur Sikri, India"} />
             </div>
             <p className="image-credit">{t.photoCredit}</p>
           </div>
@@ -306,11 +482,13 @@ export default function Home() {
           <div className="content-rail">
             <SectionMark number="01" label={t.introNumber.replace("01 — ", "")} />
             <div className="story-intro">
+              <p className="entity-lead">{t.entityLead}</p>
               <h2>{t.introTitle}</h2>
               <div><p>{t.introBody}</p><a href="https://whc.unesco.org/en/list/255/" target="_blank" rel="noreferrer">{t.heritageSource}<ArrowUpRight size={15} /></a></div>
             </div>
             <blockquote>{t.introQuote}</blockquote>
             <div className="story-timeline">{t.storyCards.map(([date, title, body]) => <article key={date}><p>{date}</p><h3>{title}</h3><span>{body}</span></article>)}</div>
+            <div className="story-legend"><h3>{t.legendTitle}</h3><p>{t.legendBody}</p></div>
           </div>
         </section>
 
@@ -334,23 +512,63 @@ export default function Home() {
         </section>
 
         <section className="nearby-section section-padding">
-          <div className="nearby-image"><img src={images.courtyard} alt={language === "hi" ? "फ़तेहपुर सीकरी परिसर का लाल पत्थर का आँगन" : "Red sandstone courtyard at Fatehpur Sikri"} /><p className="image-credit">{language === "hi" ? "चित्र: वास्तविक फ़ोटोग्राफ़ · Unsplash" : "Photo: real photography · Unsplash"}</p></div>
+          <div className="nearby-image"><img src={images.courtyard} alt={language === "hi" ? "फ़तेहपुर सीकरी क़िले का लाल पत्थर का आँगन, फ़तेहपुर सीकरी" : "Fatehpur Sikri Fort courtyard — red sandstone, Fatehpur Sikri"} /><p className="image-credit">{language === "hi" ? "चित्र: वास्तविक फ़ोटोग्राफ़ · Unsplash" : "Photo: real photography · Unsplash"}</p></div>
           <div className="nearby-content"><SectionMark number="04" label={t.nearbyKicker.replace("04 — ", "")} /><h2>{t.nearbyTitle}</h2><div>{t.nearbyCards.map(([title, body]) => <article key={title}><span>↗</span><div><h3>{title}</h3><p>{body}</p></div></article>)}</div></div>
         </section>
 
         <section id="map" className="map-section section-padding">
-          <div className="map-copy"><SectionMark number="05" label={t.mapKicker.replace("05 — ", "")} /><h2>{t.mapTitle}</h2><p>{t.mapBody}</p><a className="map-link" href="https://maps.app.goo.gl/4fcjp1yYQ3WQsXm88" target="_blank" rel="noreferrer"><MapPin size={18} />{t.openMap}<ExternalLink size={14} /></a></div>
+          <div className="map-copy"><SectionMark number="05" label={t.mapKicker.replace("05 — ", "")} /><h2>{t.mapTitle}</h2><p>{t.mapBody}</p><a className="map-link" href="https://maps.app.goo.gl/4fcjp1yYQ3WQsXm88" target="_blank" rel="noreferrer"><MapPin size={18} />{t.openMap}<ExternalLink size={14} /></a><p className="map-ref">{t.mapRef}</p></div>
           <div className="map-frame"><iframe title={t.mapTitle} src={mapSrc} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div>
         </section>
 
+        <section id="weather" className="weather-section section-padding">
+          <div className="section-heading"><SectionMark number="06" label={t.weatherKicker.replace("06 — ", "")} /><h2>{t.weatherTitle}</h2><p>{t.weatherIntro}</p></div>
+          <WeatherPanel lang={language} labels={{ now: t.wNow, forecast: t.wForecast, feels: t.wFeels, humidity: t.wHumidity, wind: t.wWind, rain: t.wRain, uv: t.wUv, updated: t.wUpdated, loading: t.wLoading, error: t.wError, umbrella: t.wUmbrella, heat: t.wHeat, uvWarn: t.wUvWarn, advTitle: t.advTitle, advOutfit: t.advOutfit, advActivity: t.advActivity, advItems: t.advItems, advRisk: t.advRisk }} />
+        </section>
+
+        <section id="seasons" className="seasons-section section-padding">
+          <div className="section-heading"><SectionMark number="07" label={t.seasonsKicker.replace("07 — ", "")} /><h2>{t.seasonsTitle}</h2><p>{t.seasonsIntro}</p></div>
+          <div className="season-table-wrap">
+            <table className="season-table">
+              <thead><tr>{t.seasonHead.map((h) => <th key={h}>{h}</th>)}</tr></thead>
+              <tbody>
+                {t.seasonRows.map((row) => (
+                  <tr key={row[0]}>
+                    <th scope="row">{row[0]}</th>
+                    <td>{row[1]}<br /><small>{row[2]}</small></td>
+                    <td>{row[3]}</td>
+                    <td>{row[4]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="climate-block"><p className="eyebrow">{t.climateKicker}</p><h3>{t.climateTitle}</h3><p>{t.climateBody}</p></div>
+        </section>
+
+        <section id="itineraries" className="itinerary-section section-padding">
+          <div className="section-heading"><SectionMark number="08" label={t.itineraryKicker.replace("08 — ", "")} /><h2>{t.itineraryTitle}</h2><p>{t.itineraryIntro}</p></div>
+          <div className="itinerary-grid">{t.itineraries.map(([title, body]) => <article key={title} className="itinerary-card"><h3>{title}</h3><p>{body}</p></article>)}</div>
+          <div className="routes-block">
+            <p className="eyebrow">{t.routesKicker}</p>
+            <h3>{t.routesTitle}</h3>
+            <div className="routes-list">{t.routes.map(([title, body]) => <article key={title} className="route-card"><h4>{title}</h4><p>{body}</p></article>)}</div>
+          </div>
+        </section>
+
+        <section id="responsibility" className="responsibility-section section-padding">
+          <div className="section-heading"><SectionMark number="09" label={t.responsibilityKicker.replace("09 — ", "")} /><h2>{t.responsibilityTitle}</h2><p>{t.responsibilityBody}</p></div>
+          <div className="responsibility-grid">{t.responsibilityItems.map(([title, body]) => <article key={title}><h3>{title}</h3><p>{body}</p></article>)}</div>
+        </section>
+
         <section id="faq" className="faq-section section-padding">
-          <div className="section-heading"><SectionMark number="06" label={t.faqKicker.replace("06 — ", "")} /><h2>{t.faqTitle}</h2></div>
+          <div className="section-heading"><SectionMark number="10" label={t.faqKicker.replace("10 — ", "")} /><h2>{t.faqTitle}</h2></div>
           <div className="faq-list">{t.faq.map(([question, answer], index) => <details key={question} open={index === 0}><summary>{question}<ChevronDown size={20} /></summary><p>{answer}</p></details>)}</div>
         </section>
 
         <section className="sources-section section-padding">
           <div><p className="eyebrow">{t.resourcesKicker}</p><h2>{t.resourcesTitle}</h2><p>{t.resourcesBody}</p></div>
-          <div className="source-list">{t.sources.map(([name, description], index) => <a key={name} href={["https://whc.unesco.org/en/list/255/", "https://asi.nic.in/pages/WorldHeritageFatehpurSikri", "https://www.tajmahal.gov.in/fatehpur-sikri.aspx"][index]} target="_blank" rel="noreferrer"><span>0{index + 1}</span><div><h3>{name}</h3><p>{description}</p></div><ArrowUpRight size={17} /></a>)}</div>
+          <div className="source-list">{t.sources.map(([name, description], index) => <a key={name} href={["https://whc.unesco.org/en/list/255/", "https://asi.nic.in/pages/WorldHeritageFatehpurSikri", "https://uptourism.gov.in", "https://en.wikipedia.org/wiki/Fatehpur_Sikri"][index]} target="_blank" rel="noreferrer"><span>0{index + 1}</span><div><h3>{name}</h3><p>{description}</p></div><ArrowUpRight size={17} /></a>)}</div>
         </section>
       </main>
 
