@@ -95,7 +95,7 @@ const translations = {
         "अकबर के शासन में यह मुग़लों का पहला नियोजित नगर बना।",
       ],
       [
-        "1575",
+        "16वीं शताब्दी",
         "बुलंद दरवाज़ा",
         "गुजरात की विजय की स्मृति में बना विशाल प्रवेश-द्वार।",
       ],
@@ -427,7 +427,7 @@ const translations = {
         "Under Akbar, it developed as the first planned city of the Mughals.",
       ],
       [
-        "1575",
+        "16th century",
         "Buland Darwaza",
         "A monumental gateway completed to commemorate the victory of Gujarat.",
       ],
@@ -1147,6 +1147,9 @@ export default function Home({ language }: { language: Language }) {
               <ExternalLink size={14} />
             </a>
             <p className="map-ref">{t.mapRef}</p>
+            <p className="map-ref">
+              <a href="https://maps.app.goo.gl/4fcjp1yYQ3WQsXm88">{t.rating}</a>
+            </p>
           </div>
           <div className="map-frame">
             <iframe
