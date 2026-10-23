@@ -1,13 +1,15 @@
-import { createRoot } from "react-dom/client";
+import { hydrateRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
-
-createRoot(document.getElementById("root")!).render(<App />);
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/sw.js").catch(() => {
-      /* Service worker registration is best-effort; ignore failures. */
-    });
-  });
-}
+hydrateRoot(
+  document.getElementById("root")!,
+  <App path={window.location.pathname} />
+);
+// Retire the old offline cache so releases and weather cannot remain stale.
+if ("serviceWorker" in navigator)
+  navigator.serviceWorker
+    .getRegistrations()
+    .then(registrations =>
+      Promise.all(registrations.map(registration => registration.unregister()))
+    )
+    .catch(() => {});

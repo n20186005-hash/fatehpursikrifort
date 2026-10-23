@@ -79,7 +79,9 @@ export interface WeatherPayload {
 
 export function weekday(date: string, lang: "en" | "hi"): string {
   const d = new Date(`${date}T00:00:00`);
-  return d.toLocaleDateString(lang === "hi" ? "hi-IN" : "en-IN", { weekday: "short" });
+  return d.toLocaleDateString(lang === "hi" ? "hi-IN" : "en-IN", {
+    weekday: "short",
+  });
 }
 
 /** km/h → Beaufort level (used for wind-based advice). */
@@ -127,7 +129,11 @@ export function buildAdvice(p: WeatherPayload, lang: "en" | "hi"): Advice {
   const isFog = code === 45 || code === 48;
   const isClear = code === 0 || code === 1;
   const isCloudy = code === 3;
-  const isRain = isLightRain || isHeavyRain || (code >= 61 && code <= 67) || (code >= 80 && code <= 82);
+  const isRain =
+    isLightRain ||
+    isHeavyRain ||
+    (code >= 61 && code <= 67) ||
+    (code >= 80 && code <= 82);
 
   const T = (en: string, hi: string) => (lang === "en" ? en : hi);
   const outfit: string[] = [];
@@ -139,8 +145,8 @@ export function buildAdvice(p: WeatherPayload, lang: "en" | "hi"): Advice {
   if (isThunder) {
     risk.push(
       T(
-        "Thunderstorms likely—avoid open courtyards and tall or metal structures; shelter in covered areas.",
-        "आँधी-तूफ़ान की संभावना—खुले आँगनों व ऊँची या धातु संरचनाओं से बचें; ढके स्थान में शरण लें।"
+        "Thunderstorm conditions—check official warnings and postpone exposed sightseeing. This forecast is not an official alert.",
+        "आँधी-तूफ़ान के हालात—आधिकारिक चेतावनी देखें और खुले स्थान की यात्रा टालें। यह पूर्वानुमान आधिकारिक चेतावनी नहीं है।"
       )
     );
   }
@@ -151,15 +157,40 @@ export function buildAdvice(p: WeatherPayload, lang: "en" | "hi"): Advice {
         "भारी बारिश—निचले स्थानों से बचें; लंबे छाते के बजाय रेनकोट रखें (हवा उठा देती है)।"
       )
     );
-    activity.push(T("Heavy rain—prefer covered pavilions; outdoor plans should flex.", "भारी बारिश—ढके मंडप चुनें; बाहरी योजना लचीली रखें।"));
+    activity.push(
+      T(
+        "Heavy rain—prefer covered pavilions; outdoor plans should flex.",
+        "भारी बारिश—ढके मंडप चुनें; बाहरी योजना लचीली रखें।"
+      )
+    );
   } else if (isLightRain) {
-    outfit.push(T("Light rain—surfaces get slippery; wear shoes with grip.", "हल्की बारिश—सतहें फिसलनी हो जाती हैं; पकड़ वाले जूते पहनें।"));
-    activity.push(T("Light rain—outdoor comfort is lower; keep moving between covered spots.", "हल्की बारिश—बाहर आराम कम; ढके स्थानों के बीच चलें।"));
+    outfit.push(
+      T(
+        "Light rain—surfaces get slippery; wear shoes with grip.",
+        "हल्की बारिश—सतहें फिसलनी हो जाती हैं; पकड़ वाले जूते पहनें।"
+      )
+    );
+    activity.push(
+      T(
+        "Light rain—outdoor comfort is lower; keep moving between covered spots.",
+        "हल्की बारिश—बाहर आराम कम; ढके स्थानों के बीच चलें।"
+      )
+    );
     items.push(T("compact umbrella", "छोटा छाता"));
   }
   if (precipProb >= 60 && !isRain) {
-    outfit.push(T("High rain chance—bring rain protection; paths may turn wet.", "बारिश की संभावना अधिक—बारिश का बचाव रखें; रास्ते गीले हो सकते हैं।"));
-    activity.push(T("Likely rain—favour covered areas; keep outdoor plans flexible.", "बारिश संभावित—ढके स्थान प्राथमिक; बाहरी योजना लचीली रखें।"));
+    outfit.push(
+      T(
+        "High rain chance—bring rain protection; paths may turn wet.",
+        "बारिश की संभावना अधिक—बारिश का बचाव रखें; रास्ते गीले हो सकते हैं।"
+      )
+    );
+    activity.push(
+      T(
+        "Likely rain—favour covered areas; keep outdoor plans flexible.",
+        "बारिश संभावित—ढके स्थान प्राथमिक; बाहरी योजना लचीली रखें।"
+      )
+    );
     items.push(T("umbrella / raincoat", "छाता / रेनकोट"));
   } else if (precipProb >= 30 && !isRain) {
     items.push(T("umbrella, just in case", "शायद के लिए छाता"));
@@ -173,19 +204,43 @@ export function buildAdvice(p: WeatherPayload, lang: "en" | "hi"): Advice {
         "अत्यधिक गर्मी—दोपहर की बाहरी यात्रा टालें; छाया में आराम करें और बार-बार पानी पिएँ।"
       )
     );
-    outfit.push(T("Very hot—light, loose, breathable clothing.", "बहुत गर्मी—हल्के, ढीले, साँस लेने वाले कपड़े।"));
-    activity.push(T("Shorten outdoor time; go at opening or late afternoon.", "बाहरी समय घटाएँ; खुलने या देर शाम जाएँ।"));
-    items.push(T("water, sun hat, oral rehydration", "पानी, सूर्य टोपी, ओआरएस"));
+    outfit.push(
+      T(
+        "Very hot—light, loose, breathable clothing.",
+        "बहुत गर्मी—हल्के, ढीले, साँस लेने वाले कपड़े।"
+      )
+    );
+    activity.push(
+      T(
+        "Shorten outdoor time; go at opening or late afternoon.",
+        "बाहरी समय घटाएँ; खुलने या देर शाम जाएँ।"
+      )
+    );
+    items.push(T("water, sun hat", "पानी, सूर्य टोपी"));
   } else if (tmax >= 32) {
-    outfit.push(T("Warm—light, breathable clothing.", "गर्म—हल्के, साँस लेने वाले कपड़े।"));
-    activity.push(T("Hot—avoid midday, shorten outdoor time, rest in shade.", "गर्म—दोपहर टालें, बाहरी समय घटाएँ, छाया में आराम करें।"));
+    outfit.push(
+      T("Warm—light, breathable clothing.", "गर्म—हल्के, साँस लेने वाले कपड़े।")
+    );
+    activity.push(
+      T(
+        "Hot—avoid midday, shorten outdoor time, rest in shade.",
+        "गर्म—दोपहर टालें, बाहरी समय घटाएँ, छाया में आराम करें।"
+      )
+    );
     items.push(T("water, sun hat", "पानी, सूर्य टोपी"));
   }
 
   // --- UV ---
   if (uv >= 5) {
-    items.push(T("sunscreen, sunglasses, hat", "सनस्क्रीन, धूप का चश्मा, टोपी"));
-    activity.push(T("UV is strong—seek shade at midday and reapply sunscreen.", "यूवी प्रबल—दोपहर छाया लें और सनस्क्रीन लगाएँ।"));
+    items.push(
+      T("sunscreen, sunglasses, hat", "सनस्क्रीन, धूप का चश्मा, टोपी")
+    );
+    activity.push(
+      T(
+        "UV is strong—seek shade at midday and reapply sunscreen.",
+        "यूवी प्रबल—दोपहर छाया लें और सनस्क्रीन लगाएँ।"
+      )
+    );
   }
 
   // --- Wind ---
@@ -198,32 +253,64 @@ export function buildAdvice(p: WeatherPayload, lang: "en" | "hi"): Advice {
       )
     );
   } else if (windLevel >= 5) {
-    outfit.push(T("Breezy—secure hats/scarves; avoid very loose clothing.", "हवा—टोपी/दुपट्टा सँभालें; बहुत ढीले कपड़े न पहनें।"));
+    outfit.push(
+      T(
+        "Breezy—secure hats/scarves; avoid very loose clothing.",
+        "हवा—टोपी/दुपट्टा सँभालें; बहुत ढीले कपड़े न पहनें।"
+      )
+    );
     items.push(T("a cap that won't blow off", "उड़ने वाली नहीं टोपी"));
   }
 
   // --- Cold / diurnal swing ---
   if (tmax <= 10) {
-    outfit.push(T("Cold—warm jacket and scarf.", "ठंड—गर्म जैकेट और स्कार्फ़।"));
+    outfit.push(
+      T("Cold—warm jacket and scarf.", "ठंड—गर्म जैकेट और स्कार्फ़।")
+    );
     items.push(T("warm layers", "गर्म कपड़े"));
   } else if (tmax - tmin > 8) {
-    outfit.push(T("Big day-night swing—carry a layer you can add or remove.", "दिन-रात का अंतर बड़ा—एक अतिरिक्त कपड़ा रखें।"));
+    outfit.push(
+      T(
+        "Big day-night swing—carry a layer you can add or remove.",
+        "दिन-रात का अंतर बड़ा—एक अतिरिक्त कपड़ा रखें।"
+      )
+    );
   }
 
   // --- Fog ---
   if (isFog) {
-    risk.push(T("Dense fog—visibility is low; poor for views and photos; mask if dusty.", "घना कोहरा—दृश्यता कम; दृश्य व फ़ोटो ख़राब; धूल हो तो मास्क।"));
+    risk.push(
+      T(
+        "Dense fog—visibility is low; poor for views and photos; mask if dusty.",
+        "घना कोहरा—दृश्यता कम; दृश्य व फ़ोटो ख़राब; धूल हो तो मास्क।"
+      )
+    );
   }
 
   // --- Clear / cloudy positives ---
   if (!isRain && tmax < 32 && windLevel < 5) {
     if (isClear) {
-      activity.push(T("Clear skies—great for outdoor exploring and photos.", "साफ़ आसमान—बाहर घूमने और फ़ोटो के लिए बढ़िया।"));
+      activity.push(
+        T(
+          "Clear skies—great for outdoor exploring and photos.",
+          "साफ़ आसमान—बाहर घूमने और फ़ोटो के लिए बढ़िया।"
+        )
+      );
     } else if (isCloudy) {
-      activity.push(T("Soft light—comfortable for long outdoor walks and photography.", "कोमल रोशनी—लंबी बाहरी सैर और फ़ोटो के लिए आरामदायक।"));
+      activity.push(
+        T(
+          "Soft light—comfortable for long outdoor walks and photography.",
+          "कोमल रोशनी—लंबी बाहरी सैर और फ़ोटो के लिए आरामदायक।"
+        )
+      );
     }
   }
 
   const ded = (a: string[]) => Array.from(new Set(a));
-  return { outfit: ded(outfit), activity: ded(activity), items: ded(items), risk: ded(risk) };
+  return {
+    outfit: ded(outfit),
+    activity: ded(activity),
+    items: ded(items),
+    risk: ded(risk),
+  };
 }

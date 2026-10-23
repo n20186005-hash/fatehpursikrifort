@@ -1,14 +1,7 @@
-/**
- * Cloudflare Pages Function — server-side weather for Fatehpur Sikri.
- *
- * This implements the "fetch on the server and cache" requirement for this
- * stack: the edge fetches Open-Meteo, caches the result in the edge cache, and
- * the client only renders the response. No API key is involved, and the client
- * never sees any provider/source wording — it simply shows the conditions.
- */
+// Server-side forecast used by the Worker weather route.
 
 const LAT = 27.0966511;
-const LON = 77.6636685;
+const LON = 77.6662434;
 const TTL = 600; // 10 minutes
 
 interface DailyRow {
@@ -25,9 +18,12 @@ export async function onRequest(context: any): Promise<Response> {
   const url = new URL(context.request.url);
   const lang = url.searchParams.get("lang") === "hi" ? "hi" : "en";
   const cache = (caches as any).default;
-  const cacheKey = new Request(`https://edge.fatehpursikrifort.com/weather/${lang}`, {
-    method: "GET",
-  });
+  const cacheKey = new Request(
+    `https://edge.fatehpursikrifort.com/weather/${lang}`,
+    {
+      method: "GET",
+    }
+  );
 
   const cached = await cache.match(cacheKey);
   if (cached) return cached;
@@ -41,9 +37,46 @@ export async function onRequest(context: any): Promise<Response> {
 
   let data: any;
   try {
-    const resp = await fetch(api, { cf: { cacheTtl: TTL, cacheEverything: true } } as any);
+    const resp = await fetch(api, {
+      cf: { cacheTtl: TTL, cacheEverything: true },
+    } as any);
     if (!resp.ok) throw new Error(`upstream ${resp.status}`);
     data = await resp.json();
+    if (
+      !data.current ||
+      !Array.isArray(data.daily?.time) ||
+      data.daily.time.length === 0 ||
+      !Number.isFinite(data.current.temperature_2m) ||
+      !Number.isFinite(data.current.weather_code)
+    )
+      throw new Error("invalid forecast");
+    const currentFields = [
+      "temperature_2m",
+      "apparent_temperature",
+      "relative_humidity_2m",
+      "precipitation",
+      "weather_code",
+      "wind_speed_10m",
+      "is_day",
+    ];
+    const dailyFields = [
+      "weather_code",
+      "temperature_2m_max",
+      "temperature_2m_min",
+      "precipitation_probability_max",
+      "wind_speed_10m_max",
+      "uv_index_max",
+    ];
+    if (
+      !currentFields.every(key => Number.isFinite(data.current[key])) ||
+      !dailyFields.every(
+        key =>
+          Array.isArray(data.daily[key]) &&
+          data.daily[key].length === data.daily.time.length &&
+          data.daily[key].every(Number.isFinite)
+      )
+    )
+      throw new Error("incomplete forecast");
   } catch {
     return new Response(JSON.stringify({ error: "weather_unavailable" }), {
       status: 502,

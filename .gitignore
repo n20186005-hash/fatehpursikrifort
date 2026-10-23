@@ -29,3 +29,7 @@ Thumbs.db
 # Manually deployed to Cloudflare Workers/Pages; do not commit the
 # preview tooling artifacts.
 client/public/__manus__/
+
+client/.wrangler/
+
+assets/generated/

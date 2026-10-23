@@ -155,3 +155,17 @@ blockquote { margin: 0 0 3.5rem; max-width: 730px; padding: 1.25rem 0 1.25rem 1.
 
 @media (max-width: 900px) { .weather-days { grid-template-columns: repeat(4, 1fr); } .itinerary-grid { grid-template-columns: 1fr; } .responsibility-grid { grid-template-columns: 1fr; } .advice-cols { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .weather-days { grid-template-columns: repeat(2, 1fr); } .weather-current { padding: 1.1rem; } .story-legend { padding: 1.3rem; } }
+
+/* Keep photograph credits in their own readable flow at every viewport. */
+.hero-visual .image-credit { position: static; margin: 1rem 0 0; padding: .5rem; max-width: 100%; color: #442719; font-size: .78rem; line-height: 1.6; }
+.hero-visual { padding-bottom: 1rem; min-width: 0; }
+.nearby-image { display: flex; flex-direction: column; }
+.nearby-image > img { min-height: 0; flex: 1; }
+.nearby-image .image-credit { position: static; background: #2d1d17; padding: 1rem; margin: 0; color: #fff; font-size: .78rem; line-height: 1.6; }
+.image-credit a { text-decoration: underline; }
+.language-button { text-decoration: none; }
+@media (max-width: 640px) { .hero-visual { width: 100%; } .hero-grid { gap: 1.5rem; } .cookie-actions { flex-wrap: wrap; } }
+
+.hero-facts { margin-top: 1.5rem; }
+html[lang="hi"] .hero-title { line-height: 1.35; }
+@media (max-width:640px) { .main-nav.main-nav-open { position: absolute; display: flex; top: 68px; right: 0; left: 0; flex-direction: column; align-items: stretch; background: #fff9ec; padding: 1rem 1.5rem; gap: .4rem; box-shadow: 0 8px 12px #3a262026; } .main-nav.main-nav-open button { text-align: left; padding: .65rem; } }
