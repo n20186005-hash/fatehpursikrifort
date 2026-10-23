@@ -97,7 +97,7 @@ const translations = {
       [
         "विजय स्मारक",
         "बुलंद दरवाज़ा",
-        "गुजरात विजय की स्मृति वाला विशाल प्रवेश-द्वार; यूनेस्को और आधिकारिक पर्यटन स्रोत निर्माण-तिथि अलग बताते हैं।",
+        "यूनेस्को इस विशाल द्वार को गुजरात विजय से जोड़ता है; आधिकारिक पर्यटन पृष्ठ अलग निर्माण-तिथि और अभियान बताता है।",
       ],
       [
         "1585",
@@ -429,7 +429,7 @@ const translations = {
       [
         "Victory gateway",
         "Buland Darwaza",
-        "A monumental gateway commemorating the Gujarat victory; UNESCO and the official tourism source differ on its construction date.",
+        "UNESCO links this monumental gateway to the Gujarat victory; the official tourism page gives a different construction date and campaign.",
       ],
       [
         "1585",
