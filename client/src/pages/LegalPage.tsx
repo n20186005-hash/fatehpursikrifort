@@ -198,6 +198,18 @@ export default function LegalPage({
           <ShieldCheck size={22} />
           <span>{page.intro}</span>
         </div>
+        {(kind === "privacy" || kind === "cookies") && (
+          <p>
+            {language === "hi"
+              ? "Cloudflare होस्टिंग प्रदर्शन/RUM बीकन जोड़ सकती है। यह Google Analytics से अलग है और यह सेटिंग इसे नियंत्रित नहीं करती। बीकन स्क्रिप्ट दिखाई दी; इससे मेट्रिक भेजे जाने की पुष्टि नहीं होती। "
+              : "Cloudflare hosting may add a performance/RUM beacon, separate from Google Analytics and unaffected by this setting. A beacon script was observed; its presence alone does not confirm that metrics were transmitted. "}
+            <a href="https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/">
+              {language === "hi"
+                ? "Cloudflare की डेटा-संग्रह जानकारी"
+                : "Cloudflare data collection documentation"}
+            </a>
+          </p>
+        )}
       </section>
       {kind === "cookies" ? (
         <section className="cookie-panel">
