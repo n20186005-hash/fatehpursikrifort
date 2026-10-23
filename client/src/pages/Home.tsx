@@ -95,9 +95,9 @@ const translations = {
         "अकबर के शासन में यह मुग़लों का पहला नियोजित नगर बना।",
       ],
       [
-        "16वीं शताब्दी",
+        "विजय स्मारक",
         "बुलंद दरवाज़ा",
-        "गुजरात की विजय की स्मृति में बना विशाल प्रवेश-द्वार।",
+        "गुजरात विजय की स्मृति वाला विशाल प्रवेश-द्वार; यूनेस्को और आधिकारिक पर्यटन स्रोत निर्माण-तिथि अलग बताते हैं।",
       ],
       [
         "1585",
@@ -427,9 +427,9 @@ const translations = {
         "Under Akbar, it developed as the first planned city of the Mughals.",
       ],
       [
-        "16th century",
+        "Victory gateway",
         "Buland Darwaza",
-        "A monumental gateway completed to commemorate the victory of Gujarat.",
+        "A monumental gateway commemorating the Gujarat victory; UNESCO and the official tourism source differ on its construction date.",
       ],
       [
         "1585",
